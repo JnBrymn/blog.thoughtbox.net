@@ -1,0 +1,28 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            Thought Box
+tagline:          'A random walk'
+description:      'Life on the Pareto Frontier'
+url:              http://blog.jnbrymn.com
+baseurl:          /
+
+author:
+  name:           'John Berryman'
+  url:            https://twitter.com/JnBrymn
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           https://github.com/JnBrymn/
+
+exclude:
+  - _drafts/hidden
