@@ -34,9 +34,9 @@ def test_my_code(self, mock_some_function):
     # replaced with `some_function`
     my_code('do your thing')
 
-    # after calling my_code you can check that `mock_some_function` was
-    # called and you can make sure it was called with the expected
-    # values
+    # after calling my_code you can check that `mock_some_function`
+    # was called and you can make sure it was called with the
+    # expected values
     mock_some_function.assert_called_once_with(
         'do', 'your', 'thing'
     )
