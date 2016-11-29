@@ -3,7 +3,7 @@ layout: post
 title: Cowboys and Consultants Don't Need Unit Tests
 ---
 
-As a developer, my understanding and respect for software testing has been slow coming because in my previous work I have been a cowboy coder (an engineer) and a consultant, and in these roles it wasn't yet obvious how important test really is. But over the past year I have finally gained an appropriate respect and appreciation for testing; and it's even improving the way I write code. In this post I will explain where I've come from and how far I've traveled in my testing practices. I'll then list out some of the more important principles I've picked up along the way.
+As a developer, my understanding and respect for software testing has been slow coming because in my previous work I have been an engineer and a consultant, and in these roles it wasn't yet obvious how important testing really is. But over the past year I have finally gained an appropriate respect and appreciation for testing; and it's even improving the way I write code. In this post I will explain where I've come from and how far I've traveled in my testing practices. I'll then list out some of the more important principles I've picked up along the way.
 
 ## Engineers are cowboys ... and cowboys don't need no stinkin' tests.
 I got my start as an Aerospace engineer and as an engineer, _if_ you do any programming at all, testing is probably not part of it. Why? _Because engineers are cowboy coders._ As engineering students, we are taught just enough programming to implement whatever algorithm we have in mind, make some pretty graphs, and then we graduate.
@@ -17,21 +17,24 @@ After some time I figured out that satellites and aircraft were cool 'n' all, bu
 It was finally at Eventbrite when I truly experienced and understood the benefit of good testing practices. Eventbrite is by far the largest company I have ever worked for, with the most extensive and mature code base. With such a large amount of code, and with so many different contributors, it imperative that tests should be written along with code. Thus I was finally learning _proper_ software development! Below are some of the things that I picked up about testing. Since Python is our dominant language, much of the details below are Python specific, but the main idea can be applied to most any language.
 
 ### Patterns for testing and the influence on code structure
-In python testing the `mock` library is regularly used to mock out functionality. For instance you will often see tests like this (note the comments):
+In python testing, the `mock` library is regularly used to mock out functionality. For instance you will often see tests like this (note the comments):
 
 ```python
-@patch(thingy.some_function, return_value='test')
+@mock.patch('my_package.some_function', return_value='bologna')
 def test_my_code(self, mock_some_function):
     """
-    mock_some_function is a mock function that replaces
-    some_function and every time it's called it returns the
-    value 'test'
+    for the duration of this test, `mock.patch` replaces
+    every occurrence of `my_package.some_function` with a mock
+    function that always returns the string 'bologna',
+    this mock function is then provided to this test method
+    as the `mock_some_function` argument
     """
 
-    # my_code contains a call to some_function
+    # `my_code` contains a call to `some_function` - which has been
+    # replaced with `some_function`
     my_code('do your thing')
 
-    # after calling my_code you can check that some_function was
+    # after calling my_code you can check that `mock_some_function` was
     # called and you can make sure it was called with the expected
     # values
     mock_some_function.assert_called_once_with(
@@ -108,6 +111,7 @@ And then, in turn, each of the sub-functions would be tested similarly until you
 This is obviously an over-simplification of reality, but you do get the point, right? Mocking only one level deep lends to clean tests. And structuring code hierarchically is a great way to ensure that there is little need to use "deep mocking".
 
 Let's step back a bit and also consider the collateral benefits of this approach to code structure and testing:
+
 * Tests become much more uniform and easy-to-understand for _future developer_.
 * When code must be refactored, it's going to require fewer test to be fixed because tests _only_ touch a single method. (That's why they call it "unit" testing!)
 * The amount of mocking required to test code is decreased because there is a lot more code to mock if you are mocking deep into code.
@@ -120,12 +124,14 @@ Another thing that I finally realized is the true importance of Test Driven Deve
 1. More importantly - you rarely actually come back and actually do tests! There's always something that seems more important in 2 days than writing tests for code that _you've convinced yourself_ works perfectly.
 
 Because of this I have been drawn more and more to true Test Driven Development:
+
 * Write the minimal amount of boiler plate code you need to make tests.
 * Write failing tests.
 * Write code that fixes all the tests.
 
 ## Still learning
 I've come a log way from my cowboy-consultant coding days. But I still have much to learn. This post covered the importance of testing as good code hygene. But there are a lot of other aspects of my own development practices that I would like to refine. Here's a laundry list of things I would like to focus on in the future:
+
 * Readable, "impathetic" code: How to make code that _future developer_ or even _future you_ will be able to read and easily understand.
 * Efficient code reading: Something's broken, what strategies should you use to efficiently isolate and diagnose the problem? - OR - Given a new code base, how do you quickly understand where everything is and how everything works?
 * Tools of the trade: A developer I respect greatly confided that after weeks of her first focused python development, she was unaware that python came with a debugger! I'm sure there are plenty of things that I'm not aware of too. What are some tools and tricks that can greatly boost productivity?
